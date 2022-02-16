@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="ir.ui.view" id="inh_product_template_is_burger_form_view">
+        <field name="name">inh.product.template.is.burger.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">          
+            <xpath expr="//div[@name='options']" position="inside">
+                <div>
+                    <field name="is_burger"/>
+                    <label for="is_burger"/>
+                </div>
+            </xpath>
+            <xpath expr="//notebook" position="inside">
+                <page name="burger_page" string="Burger Details" attrs="{'invisible': [('is_burger', '=', False)]}">
+                    <div class="alert alert-danger" role="alert" style="margin-bottom:0px; margin:5px;"
+                         attrs="{'invisible': [('vegan_warning','=',False)]}">
+                         If is a Vegan Burger it has to be made of Peas or Soja..
+                    </div>
+                    <group name="burger_group">
+                        <group name="burger_group_left">
+                            <field name="size" attrs="{'required': [('is_burger', '=', True)]}"/>
+                            <field name="meat" attrs="{'required': [('is_burger', '=', True)]}"/>
+                            <field name="author" options="{'no_open': True, 'no_create': True}"/>
+                        </group>
+                        <group name="burger_group_right">
+                            <field name="limited_edition"/>
+                            <field name="is_vegan"/>
+                            <field name="gluten_free"/>
+                            <field name="vegan_warning" invisible="1"/>
+                        </group>
+                    </group>
+                    <group name="popularity_group">
+                        <group name="popularity_group_left">
+                            <field name="rating"/>
+                        </group>
+                        <group name="popularity_group_right">
+                            <field name="popularity"/>
+                        </group>
+                    </group>
+                    <group name="slogan_group">
+                        <field name="slogan"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
