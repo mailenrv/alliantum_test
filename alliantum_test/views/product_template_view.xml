@@ -42,6 +42,15 @@
                         <field name="slogan"/>
                     </group>
                 </page>
+                <page name="burger_images" string="Burger Images" attrs="{'invisible': [('is_burger', '=', False)]}">
+                    <field name="burger_image_ids">
+                        <tree editable="bottom">
+                            <field name="title"/>
+                            <field name="category_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="image" widget="image" options='{"preview_image": "image"}' class="oe_avatar"/>
+                        </tree>
+                    </field>
+                </page>
             </xpath>
         </field>
     </record>

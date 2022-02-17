@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_dynamic_sale,product.dynamic.sale,model_product_dynamic_sale,,1,1,1,1
+access_burger_image_line,burger.image.line,model_burger_image_line,,1,1,1,1
+access_burger_image_category,burger.image.category,model_burger_image_category,,1,1,1,1

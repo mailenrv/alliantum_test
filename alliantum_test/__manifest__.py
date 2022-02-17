@@ -13,8 +13,10 @@
     'summary': 'This module gives extra details to products marked as Burgers',
     'depends': ['sale_management'],
     'data': [
-        #'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/product_template_view.xml',
+        'report/big_box_label.xml',
+        'report/reports.xml',
     ],
     'images': ['static/description/icon.png'],
 }
