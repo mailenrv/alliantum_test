@@ -1,36 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
-        <template id="big_box_external_layout">
-            <t t-if="not o and doc">
-                <t t-set="o" t-value="doc"/>
-            </t>
-            <t t-if="o and 'company_id' in o">
-                <t t-set="company" t-value="o.company_id"/>
-            </t>
-            <t t-if="not o or not 'company_id' in o">
-                <t t-set="company" t-value="res_company"/>
-            </t>
-            <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id"
-                 t-att-data-oe-lang="o and o.env.context.get('lang')">
-                <t t-raw="0"/>
-            </div>
-        </template>
-
-        <template id="big_box_label">
-            <t t-call="web.html_container">
-                <t t-foreach="docs" t-as="o">
-                    <t t-call="alliantum_test.big_box_external_layout">
-                        <div class="page">
-
-
-                            <div class="oe_structure"/>
+    <template id="big_box_label">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <t t-if="o.is_burger">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                  <h2 t-esc="o.display_name"/>
+                            </div>
                         </div>
-                    </t>
-                </t>
-            </t>
-        </template>
+                        <div class="row">
+                            <div class="col-12 text-center font-italic pt-2">
+                                  <h4 t-esc="o.slogan"/>
+                            </div>
+                        </div>
+                        <div class="row pt-4">
+                            <div class="col-4 text-center pt-2">
+                                   <div class="text-center">
+                                        <img t-if="o.image_1920"
+                                              t-att-src="image_data_uri(o.image_1920)"
+                                              style="max-height: 220px; max-width: 220px" alt="Logo"/>
+                                </div>
+                                <p>
+                                    <t t-if="o.popularity == 'medium'">
+                                        <div class="text-center">
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="o.popularity == 'high'">
+                                        <div class="text-center">
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                        </div>
+                                    </t>
+                                    <t t-if="o.popularity == 'low'">
+                                        <div class="text-center">
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                            <i class="fa fa-fw fa-star" aria-label="Stars" role="img" title="Stars"/>
+                                        </div>
+                                    </t>
+                                </p>
+                            </div>
+                            <div class="col-8">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center"><strong>SIZE</strong></th>
+                                            <th class="text-center">MEAT</th>
+                                            <th class="text-center">AUTHOR</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="text-center font-weight-bold"><span t-field="o.size"/></td>
+                                            <td class="text-center font-weight-bold"><span t-field="o.meat"/></td>
+                                            <td class="text-center font-weight-bold"><span t-esc="o.author.display_name or '-'"/></td>
+                                        </tr>
+                                        <tr/>
+                                        <tr>
+                                            <t t-set="notes" t-value="''"/>
+                                            <t t-if="o.limited_edition">
+                                                <t t-set="notes" t-value="'Limited Edition / '"/>
+                                            </t>
+                                            <t t-if="o.is_vegan">
+                                                <t t-set="notes" t-value="notes + 'Is Vegan / '"/>
+                                            </t>
+                                            <t t-if="o.gluten_free">
+                                                <t t-set="notes" t-value="notes + ' Gluten Free /'"/>
+                                            </t>
+                                            <td colspan="3">
+                                               <span t-esc="notes"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-left">PRICE: <span t-esc="o.list_price" t-options="{'widget': 'monetary', 'display_currency': o.env.company.currency_id}"></span> + TAXES</td>
+                                            <td colspan="2" class="text-right">
+                                                <t t-if="o.barcode">
+                                                    <div class="pt-1">
+                                                        <img alt="Barcode" t-if="len(o.barcode) == 13" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN13', quote_plus(o.barcode or ''), 600, 150)" style="width:28mm;height:10mm;"/>
+                                                        <img alt="Barcode" t-elif="len(o.barcode) == 8" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('EAN8', quote_plus(o.barcode or ''), 600, 150)" style="width:28mm;height:10mm;"/>
+                                                        <img alt="Barcode" t-else="" t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', quote_plus(o.barcode or ''), 600, 150)" style="width:28mm;height:10mm;"/>
+                                                    </div>
+                                                  </t>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
-    </data>
+                    </div>
+
+                </t>
+                <t t-else="">
+                    <span>The product has not </span><stong>Big Box Label </stong><span>defined, that is only for Burguer products</span>
+                </t>
+                <div class="oe_structure"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="big_box_print">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="alliantum_test.big_box_label" />
+            </t>
+        </t>
+    </template>
 
 </odoo>

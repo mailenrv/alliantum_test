@@ -38,9 +38,9 @@ class ProductTemplate(models.Model):
     @api.depends('rating')
     def _compute_popularity(self):
         for record in self:
-            if 0 <= record.rating <= 4000:
+            if 0 <= record.rating < 4000:
                 record.popularity = 'low'
-            elif 4000 < record.rating <= 10000:
+            elif record.rating >= 4000 and record.rating <= 10000:
                 record.popularity = 'medium'
             else:
                 record.popularity = 'high'

@@ -6,8 +6,8 @@
             string="Big Box Label"
             model="product.template"
             report_type="qweb-pdf"
-            file="alliantum_test.big_box_label"
-            name="alliantum_test.big_box_label"
+            file="alliantum_test.big_box_print"
+            name="alliantum_test.big_box_print"
         />
 
     </data>
