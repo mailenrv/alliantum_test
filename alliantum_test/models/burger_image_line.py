@@ -17,7 +17,7 @@ class BurgerImageLine(models.Model):
 class BurgerImageLine(models.Model):
     _name = 'burger.image.line'
     _description = "Burger Image Line"
-    _order = "id desc"
+    _order = "categ_count desc"
 
     product_tmpl_id = fields.Many2one('product.template', ondelete='cascade')
     image = fields.Image("Big Image", max_width=1920, max_height=1920, required=True)
@@ -25,6 +25,13 @@ class BurgerImageLine(models.Model):
     image_128 = fields.Image("Small Image", related="image", max_width=128, max_height=128, store=True)
     title = fields.Char(required=True)
     category_ids = fields.Many2many('burger.image.category')
+    categ_count = fields.Integer(compute='_compute_categ_count', store=True)
+
+    @api.depends('category_ids')
+    def _compute_categ_count(self):
+        for line in self:
+            line.categ_count = len(line.category_ids)
+
 
 
 
