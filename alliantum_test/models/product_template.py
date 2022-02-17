@@ -46,8 +46,6 @@ class ProductTemplate(models.Model):
             else:
                 record.popularity = 'high'
 
-
-
     @api.depends('is_vegan','meat')
     def _compute_vegan_warning(self):
         for record in self:
